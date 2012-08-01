@@ -31,12 +31,11 @@ img{
 	margin-right:auto;
 	width:75%;
 }
-/*input[type=text]{
-	margin-left: 20px;
-	border-radius: 5px;
-	width:250px;
-	height: 20px;
-}*/
+.logo_min {
+ 	width: 25%; 
+ 	height: 25%
+}
+
 .has-icon>h2, .has-icon>p{
 	padding-left:13%;
 	font-family: Georgia, "Times New Roman", Times, serif;
