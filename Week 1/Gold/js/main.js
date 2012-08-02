@@ -20,7 +20,7 @@
 
 		});
 
-
+		
 //create select field element and populate with options.
 		var makeCats = function () {
 			var formTag = $("form"), //formTag is an array of all the form tags.
@@ -55,7 +55,7 @@
 							$('#clearLink').show();
 							$('#displayLink').hide();
 							$('#addNew').show();
-							$('#logo').addClass("logo_min");
+							$(".logo").removeClass("logo_min");
 							break;
 						case "off":
 							$('#purchaseform').show();
@@ -63,7 +63,7 @@
 							$('#displayLink').show();
 							$('#addNew').hide();
 							$('#items').hide();
-						break;
+							break;
 					default:
 						return false;
 				}
@@ -96,11 +96,15 @@
 //Save data into Local Storage: Use stringify to convert our object
 			localStorage.setItem(id, JSON.stringify(item));
 			alert("Mixtape Saved!");
+			save.off("click");
+				save.on("click", storeData);
+			window.location.reload();
 		};
 
 //Create visiable storage
 			var getData = function(){
 //console.log("id");
+				$("#purchpage").empty();
 				toggleControls("on");
 				if(localStorage.length === 0){
 						alert("There is no data in Local Storage so default data was added.");
@@ -111,8 +115,8 @@
 			makeDiv.attr("id", "items");
 			var makeList = $('<ul>');
 			makeDiv.append(makeList);
-			$("body").append(makeDiv);
-			$('items').show();
+			$("#listP").append(makeDiv);
+			$('#items').show();
 					for(var i=0, len=localStorage.length; i<len;i++){
 					var makeLi = $('<li>');
 					var linksLi = $('<li>');
@@ -132,8 +136,8 @@
 						makeSubLi.append(linksLi);
 				}
 				makeItemLinks(localStorage.key(i), linksLi); //Create our edit and delete buttons/link for each item in local storage.
+		};
 };
-}
 
 //Get the image for the right category
  /* function getImage(catName, makeSubList){
@@ -189,8 +193,10 @@ imageLi.appendChild(newImg);
 		}
 
 			function editItem(){
+				
+				var thiskey = $(this).attr("key");
 //Grab the data from our item from Local Storage
-				var value = localStorage.getItem(this.key);
+				var value = localStorage.getItem($(this).attr("key"));
 				var item = JSON.parse(value);
 
 //Show the form
@@ -199,22 +205,25 @@ imageLi.appendChild(newImg);
 //populate the form fields with current localStorage value.
 			
 			
-			$('location').val(item.locaton[1]);
+			$('#location').val(item.location[1]);
 
 			 var radios = $('input:radio[name="purchaseDate"]:checked').val();
-			$('date').val(item.date[1]);
-			$('quantity').val(item.quantity[1]);
-			$('suggestions').val(item.suggestions[1]);	
+			$('#date').val(item.date[1]);
+			$('#quantity').val(item.quantity[1]);
+			$('#suggestions').val(item.suggestions[1]);	
 
 			
 //Remove the initial listener from the input "save mixtape" button.
-			save.on("click", storeData);
+			save.off("click", storeData);
 //Change submit button value to edit button
 			$('#save').attr("value", "Edit Mixtape");
 			var editSubmit = $('#save');
 //Save the key value established in this function as a property of the editSubmit event
 //so we can use that value when save the data we edited
-			editSubmit.on("click", validate);
+			save.one("click", function(){
+				//console.log("save called");
+   storeData(thiskey);
+  });
 			editSubmit.attr("key", this.key);
 	}
 
@@ -304,7 +313,7 @@ displayLink.on("click", getData);
 var clearLink = $('#clearLink');
 clearLink.on("click", clearLocal);
 var save = $("#save");
-//save.on("click", validate);	
+save.on("click", storeData);	
 
 		
 
