@@ -19,10 +19,10 @@
         <!-- StyleSheets under here -->
         
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" /> 
-        <!-- <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script> -->
+        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
         <link rel="stylesheet" type="text/css" href="twitterplugin/jScrollPane/jScrollPane.css" />
 
-        <link rel="stylesheet" type="text/css" href="css/indexstyles.css" />-->
+        <link rel="stylesheet" type="text/css" href="css/indexstyles.css" />
        
         
 
@@ -78,7 +78,7 @@
                     <label for="password">*Password:</label>
                     <input type="password" name="password" id="password" class="required ">
                </div>
-             </form>
+            
         
         </div>
         
@@ -114,7 +114,7 @@
 
         <!-- User Profile Information Page -->
         <div data-role="content">
-	        <form action="" method="post" id="profile"
+	        <form action="" id="profile">
 			        <div data-role="fieldcontain">
 			            <p>*Fields are Required</p>
 			            <label for="userName">*User Name</label>
@@ -1568,7 +1568,7 @@
         <!-- Extras Page Content -->
         <div data-role="fieldcontain">
         
-        	<form action="http://soundcloud.com/oompcamptv" method="post"> 
+        	<form action="http://soundcloud.com/oompcamptv"> 
       
         	<label for="twittermix" id="twittermix">Twitter Mix</label>
 	        	<select name="twittermix" id="twittermix" data-native-menu="false">
@@ -1584,7 +1584,7 @@
 	        	<input type="submit" value="Submit">
         	</form>
         	
-        	<form action="" method="post"> 
+        <!--	<form action=""> 
       
         	<label for="" id="weekmix">Mixtape of the Week!</label>
 	        	<select name="weekmix" id="weekmix" data-native-menu="false">
@@ -1597,7 +1597,22 @@
 	        		<option value="na">Unavailable</option>
 	        	</select>
 	        	<input type="submit" value="Submit">
-        	</form>
+        	</form>  	-->
+        	
+        		<br></br>
+        		<input id="ajaxClear" type="button" value="Clear" data-theme="a" />
+        		
+        	<div id="ajaxdisplaying">
+	        	<input id="ajaxDisplay" type="button" value="Display" data-theme="a" />
+	        </div>
+	        
+			<div id="ajaxbacking">
+				<input id="ajaxBack" type="button" value="Back" data-theme="a" />
+			</div>
+			
+			<div id="ajaxLoading">
+				<input id="ajaxLoad" type="button" value="Load" value="click" data-theme="a"/>
+			</div>	
         	
         	<div data-role="footer" data-position="fixed">
             <div data-role="navbar">
@@ -1631,7 +1646,7 @@
         
         <div data-role="content">
         
-        	<form action="" method="post" id="purchaseform">
+        	<form action="" id="purchaseform">
         	
         	<p>*Fields are Required</p>
         	
@@ -1652,7 +1667,7 @@
 	        	
 	        	<div data-role="fieldcontain">
 					<label for="date">*Date of Purchase:</label>
-					<input type="text" name="dateofpurchase" id="date" placeholder="MM/DD/YY" class="required date" />
+					<input type="text" name="dateofpurchase" id="myDate" placeholder="MM/DD/YY" class="required date" />
 				</div>
 	        	
 	        	<div data-role="fieldcontain">
@@ -1720,8 +1735,7 @@
         <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
         <!-- JavaScript under here -->
-        <script type="text/javascript" href= "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        
+
         <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
         <script type="text/javascript" src="js/libs/jquery.validate.min.js"></script>
         <script src="js/JSON.js" type="text/javascript"></script>
