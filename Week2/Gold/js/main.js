@@ -136,7 +136,7 @@ imageLi.appendChild(newImg);
 
 //Auto Populate Local Storage
 			function autoFillData(json){
-			
+							json = JSON.parse(json);
 				 	for(var n in json){
 						var id = Math.floor(Math.random()*100000001);
 					localStorage.setItem(id, JSON.stringify(json[n]));
@@ -238,21 +238,37 @@ imageLi.appendChild(newImg);
 		}
 
 // data.json --------------------------------------------------------------------------------------------		
-	$('#json').on("pageinit",function(){	
-		$('#extras').empty();
-		$.ajax({
-			url: 'xhr/data.json',
-			type: 'GET',
-			dataType: 'json',
-			success: function(response){
-				console.log("Purchase Submitted");	
+
+function callajax(url, type, gFunc){
+
+	$.ajax({
+		url: url,
+		type: 'GET',
+		dataType: type,
+		success: function(response){
+				gFunc(response);
+				console.log("Purchase Submitted");
 					for (var i = 0 , j = response.purchase.length; i<j; i++){
-						var thing = response.purchase[i];	
-								
+						var thing = response.purchase[i];
+				}
+			},
+				error: function(err){
+				console.log("ERROR:");
+				console.log(err.statusText);
 			}
-		}
 	});
-}); 
+	
+} 
+	
+		function jsonParser(results){
+				console.log(results);
+				for (var n in results) {
+					console.log(results[n]);
+				}
+		}
+		
+	// json ajax call
+		callajax('xhr/data.json', 'json', jsonParser);
 
 
 
@@ -264,6 +280,3 @@ var clearLink = $('#clearLink');
 clearLink.on("click", clearLocal);
 var save = $("#save");
 save.on("click", storeData);	
-
-		
-
