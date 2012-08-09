@@ -22,23 +22,6 @@
 
 
 
-		
-//create select field element and populate with options.
-/*		var makeCats = function () {
-			var formTag = $("form"), //formTag is an array of all the form tags.
-				selectLi = $('<select>'),
-				makeSelect = $('<select>');
-				makeSelect.attr("id", "locations");
-		for(var i=0, j=mixtapeGenres.length; i<j; i++){
-				var makeOption = $('option');
-				var optText = mixtapeGenres[i];
-				makeOption.attr("value", optText);
-				makeOption.text(optText);
-				makeSelect.append(makeOption);
-			}
-
-		};*/
-
 //Find value of selected radio button.
 		var getSelectedRadio = function(){
 			var radios = function (){
@@ -90,7 +73,7 @@
 			getSelectedRadio();
 
 			var item = {};
-					item.location = ["Zip Code:", $('#location').val()];
+					item.location = ["Zip Code:", $('#myLocation').val()];
 					item.purchase = ["Purchase:", getSelectedRadio()];
 					item.date = ["Date", $('#myDate').val()];
 					item.quantity = ["Quantity", $('#quantity').val()];
@@ -100,7 +83,7 @@
 			alert("Mixtape Saved!");
 			save.off("click");
 				save.on("click", storeData);
-			window.location.reload();
+		//	window.location.reload();
 		};
 
 //Create visiable storage
@@ -126,7 +109,7 @@
 					var key = localStorage.key(i);
 					var value = localStorage.getItem(key);
 //Convert the string from the local storage value back to an object by using JSON.parse()
-					var obj = $.parseJSON(value); 
+					var obj = JSON.parse(value); 
 					var makeSubList = $('<ul>');
 					makeLi.append(makeSubList);
 // getImage(obj.group[1], makeSubList);
@@ -206,7 +189,7 @@ imageLi.appendChild(newImg);
 //populate the form fields with current localStorage value.
 			
 			
-			$("#location").val(item.location[1]);
+			$("#myLocation").val(item.location[1]);
 			$("#myDate").val(item.date[1]);
 			$("#quantity").val(item.quantity[1]);
 			$("#suggestions").val(item.suggestions[1]);	
@@ -253,21 +236,27 @@ imageLi.appendChild(newImg);
 						alert("Mixtape was not deleted.");
 				}
 		}
-		
-		
+
+// data.json --------------------------------------------------------------------------------------------		
+	$('#json').on("pageinit",function(){	
+		$('#extras').empty();
 		$.ajax({
 			url: 'xhr/data.json',
 			type: 'GET',
 			dataType: 'json',
 			success: function(response){
-				console.log("Purchase Submitted");				
+				console.log("Purchase Submitted");	
+					for (var i = 0 , j = response.purchase.length; i<j; i++){
+						var thing = response.purchase[i];	
+								
 			}
-		}); 
+		}
+	});
+}); 
 
 
 
 //Variable defaults, events, and calls
-
 var errMsg = $('#errors');
 var displayLink = $('#displayLink');
 displayLink.on("click", getData);
