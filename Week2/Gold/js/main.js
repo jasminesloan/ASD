@@ -20,9 +20,11 @@
 
 		});
 
+
+
 		
 //create select field element and populate with options.
-		var makeCats = function () {
+/*		var makeCats = function () {
 			var formTag = $("form"), //formTag is an array of all the form tags.
 				selectLi = $('<select>'),
 				makeSelect = $('<select>');
@@ -35,7 +37,7 @@
 				makeSelect.append(makeOption);
 			}
 
-		};
+		};*/
 
 //Find value of selected radio button.
 		var getSelectedRadio = function(){
@@ -62,7 +64,7 @@
 							$('#clearLink').show();
 							$('#displayLink').show();
 							$('#addNew').hide();
-							$('#items').hide();
+							$('#item').hide();
 							break;
 					default:
 						return false;
@@ -89,8 +91,8 @@
 
 			var item = {};
 					item.location = ["Zip Code:", $('#location').val()];
-					item.purchase = ["Purchase:", purchaseDate];
-					item.date = ["Date", $('#date').val()];
+					item.purchase = ["Purchase:", getSelectedRadio()];
+					item.date = ["Date", $('#myDate').val()];
 					item.quantity = ["Quantity", $('#quantity').val()];
 					item.suggestions = ["Suggestions", $('#suggestions').val()];
 //Save data into Local Storage: Use stringify to convert our object
@@ -112,11 +114,11 @@
 }
 //Write data from local storage to browser
 			var makeDiv = $('<div>');
-			makeDiv.attr("id", "items");
+			makeDiv.attr("id", "item");
 			var makeList = $('<ul>');
 			makeDiv.append(makeList);
 			$("#listP").append(makeDiv);
-			$('#items').show();
+			$('#item').show();
 					for(var i=0, len=localStorage.length; i<len;i++){
 					var makeLi = $('<li>');
 					var linksLi = $('<li>');
@@ -124,7 +126,7 @@
 					var key = localStorage.key(i);
 					var value = localStorage.getItem(key);
 //Convert the string from the local storage value back to an object by using JSON.parse()
-					var obj = JSON.parse(value);
+					var obj = $.parseJSON(value); 
 					var makeSubList = $('<ul>');
 					makeLi.append(makeSubList);
 // getImage(obj.group[1], makeSubList);
@@ -194,9 +196,8 @@ imageLi.appendChild(newImg);
 
 			function editItem(){
 				
-				var thiskey = $(this).attr("key");
 //Grab the data from our item from Local Storage
-				var value = localStorage.getItem($(this).attr("key"));
+				var value = localStorage.getItem(this.key);
 				var item = JSON.parse(value);
 
 //Show the form
@@ -205,19 +206,23 @@ imageLi.appendChild(newImg);
 //populate the form fields with current localStorage value.
 			
 			
-			$('#location').val(item.location[1]);
-
-			 var radios = $('input:radio[name="purchaseDate"]:checked').val();
-			$('#date').val(item.date[1]);
-			$('#quantity').val(item.quantity[1]);
-			$('#suggestions').val(item.suggestions[1]);	
+			$("#location").val(item.location[1]);
+			$("#myDate").val(item.date[1]);
+			$("#quantity").val(item.quantity[1]);
+			$("#suggestions").val(item.suggestions[1]);	
+			
+			var radios = $('input:radio[name="purchaseDate"]:checked').val();
 
 			
 //Remove the initial listener from the input "save mixtape" button.
 			save.off("click", storeData);
+
+
 //Change submit button value to edit button
 			$('#save').attr("value", "Edit Mixtape");
 			var editSubmit = $('#save');
+
+
 //Save the key value established in this function as a property of the editSubmit event
 //so we can use that value when save the data we edited
 			save.one("click", function(){
@@ -248,66 +253,22 @@ imageLi.appendChild(newImg);
 						alert("Mixtape was not deleted.");
 				}
 		}
+		
+		
+		$.ajax({
+			url: 'xhr/data.json',
+			type: 'GET',
+			dataType: 'json',
+			success: function(response){
+				console.log("Purchase Submitted");				
+			}
+		}); 
 
-/*function validate(e){
-//Define the elements we want to check
-var getGroup = $('location');
-//var getEmail = $('email');
-//var getPassword = $('pword');
 
-//Reset Error Message
-errMsg.innerHTML = "";
-getGroup.style.border = "1px solid black";
-//getEmail.style.border = "1px solid black";
-//getPassword.style.border = "1px solid black";
-
-//Get error message
-var messageAry = [];
-//Group Validation
-if(getGroup.value=== "--Choose A Genre--"){
-var groupError = "Please Chose A Genre";
-getGroup.style.border = "1px solid red";
-messageAry.push(groupError);
-}
-
-//Email Validation
-//var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w)*(\.\w{2,3})+$/;
-//if(!(re.exec(getEmail.value))){
-// var emailError = "Please enter an Email Address.";
-// getEmail.style.border = "1px solid red";
-// messageAry.push(emailError);
-//}
-
-//Password Validation
-//if(getPassword.value=== ""){
-// var passwordError = "Please enter your Password.";
-// getPassword.style.border = "1px solid red";
-// messageAry.push(passwordError);
-//}
-
-//If there were errors, display them on the screen
-if(messageAry.length >= 1){
-for(var i=0, j=messageAry.length; i < j; i++){
-var txt = document.createElement('li');
-txt.innerHTML = messageAry[i];
-errMsg.appendChild(txt);
-}
-e.preventDefault();
-return false;
-}else{
-//If all is Ok, save our data! Send key value which came from the edit data function
-//Remember this key value was passed through the editSubmit eventListener as a property
-storeData(this.key);
-}
-
-}*/
 
 //Variable defaults, events, and calls
-var mixtapeGenres = ["--Choose A Genre--", "Dirty South", "Gospel", "Hip Hop", "Miami Bass", "Old School", "Oomp Camp Albums", "R&B/Slow Jams", "Reggae"];
-var purchaseDate;
-//var	wishListValue = "No";
+
 var errMsg = $('#errors');
-makeCats();
 var displayLink = $('#displayLink');
 displayLink.on("click", getData);
 var clearLink = $('#clearLink');
