@@ -135,11 +135,10 @@ imageLi.appendChild(newImg);
 
 
 //Auto Populate Local Storage
-			function autoFillData(json){
-							json = JSON.parse(json);
-				 	for(var n in json){
+			function autoFillData(jsonData){
+					 	for(var n in jsonData){
 						var id = Math.floor(Math.random()*100000001);
-					localStorage.setItem(id, JSON.stringify(json[n]));
+					localStorage.setItem(id, JSON.stringify(jsonData[n]));
 			}
 		}
 						
@@ -237,9 +236,102 @@ imageLi.appendChild(newImg);
 				}
 		}
 
-// data.json --------------------------------------------------------------------------------------------		
+// data --------------------------------------------------------------------------------------------		
+$('#extras').on('pageinit', function() {
 
-function callajax(url, type, gFunc){
+
+// JSON Load Data
+    $('#loadJson').on("click", function(){
+        $('#itemLoadData').empty();
+        $.ajax({
+            url: 'xhr/data.json',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response){
+            console.log(response);
+                for (var i=0, j=response.purchase.length; i<j; i++){
+                    var thing = response.purchase[i];
+                    console.log(purchase);
+                    $(''+
+                        '<div class="Data">' +
+                            '<p>' + thing.myLocation + '</p>' +
+                            '<p>' + thing.purchase + '</p>' +
+                            '<p>' + thing.quantity + '</p>' +
+                            '<p>' + thing.suggestions + '</p>' +
+                            '<p>' + thing.date + '</p>' +
+                        '</div>'
+                    ).appendTo('#itemLoadData');
+                };
+            },
+        });
+    });
+    
+    
+    	
+// XML Load Data	
+		   $('#loadXML').on("click", function(){
+        $('#itemLoadData').empty();
+        $.ajax({
+            url: 'xhr/data.xml',
+            type: 'GET',
+            dataType: 'xml',
+            success: function(xml){
+           // console.log(xml);
+                $(xml).find('purchases').each(function(){
+                    var itemLoadXML = {};
+                    itemLoadXML.myLocation = $(this).find('myLocation').text();
+                    itemLoadXML.purchase = $(this).find('purchase').text();
+                    itemLoadXML.quantity = $(this).find('quantity').text();
+                    itemLoadXML.suggestions = $(this).find('suggestions').text();
+                    itemLoadXML.date = $(this).find('date').text();
+                    
+                   // console.log(itemLoadXML);
+                    $(' '+
+                        '<div class="Data">'+
+                            '<p>'+ 'Location: ' + itemLoadXML.myLocation +'</p>'+
+                            '<p>'+ 'Purchase: ' + itemLoadXML.purchase +'</p>'+
+                            '<p>'+ 'Quantity: ' + itemLoadXML.quantity +'</p>'+
+                            '<p>'+ 'Suggestions: ' + itemLoadXML.suggestions +'</p>'+
+                            '<p>'+ 'Date: ' + itemLoadXML.date +'</p>'+
+                        '</div>'
+                    ).appendTo('#itemLoadData');
+                });
+            },
+        });
+    });
+    
+//CSV Laod Data
+    $('#loadCSV').on("click", function(){
+        $('#itemLoadData').empty();
+        $.ajax({
+            url: 'xhr/data.csv',
+            type: 'GET',
+            dataType: 'text',
+            success: function(csvLoad){
+           // console.log(csv);
+                var purchase = csvLoad.split("\n");
+                for (var i = 1; i < purchase.length; i++) {
+                    var row = purchase[i];
+                    var columns = row.split(",");
+                 //   console.log(columns);
+                    $(''+
+                        '<div class="Data">'+
+                            '<p>' + 'Location: ' + columns[1] +'</p>'+
+                            '<p>' + 'Purchase: ' + columns[2] +'</p>'+
+                            '<p>' + 'Quantity: ' + columns[3] +'</p>'+
+                            '<p>' + 'Suggestions: ' + columns[4] +'</p>'+
+                            '<p>' + 'Date: ' + columns[5] +'</p>'+
+                        '</div>'
+                    ).appendTo('#itemLoadData');
+                }
+            },
+        });
+    });
+    
+    
+    
+});
+/*function callajax(url, type, gFunc){
 
 	$.ajax({
 		url: url,
@@ -250,6 +342,7 @@ function callajax(url, type, gFunc){
 				console.log("Purchase Submitted");
 					for (var i = 0 , j = response.purchase.length; i<j; i++){
 						var thing = response.purchase[i];
+						var purchaseList
 				}
 			},
 				error: function(err){
@@ -258,17 +351,27 @@ function callajax(url, type, gFunc){
 			}
 	});
 	
-} 
+} */
 	
-		function jsonParser(results){
-				console.log(results);
-				for (var n in results) {
-					console.log(results[n]);
-				}
-		}
+	/*	function jsonParser(results){
+			json = results.purchase;
+
+				for (var n in json) {
+				console.log(json[n]);
+			}
+	}*/
+	
+     
+	
+	/*	function xmlParser(results){
+			var xm = $(results).find("purchases");
+
+			console.log(xm);
+		} */
 		
 	// json ajax call
-		callajax('xhr/data.json', 'json', jsonParser);
+		//callajax('xhr/data.json', 'json', jsonParser);
+
 
 
 
