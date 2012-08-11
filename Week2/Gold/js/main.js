@@ -83,7 +83,7 @@
 			alert("Mixtape Saved!");
 			save.off("click");
 				save.on("click", storeData);
-		//	window.location.reload();
+			//window.location.reload();
 		};
 
 //Create visiable storage
@@ -176,10 +176,10 @@ imageLi.appendChild(newImg);
 				linksLi.append(deleteLink);
 		}
 
-			function editItem(){
+			function editItem(key){
 				
 //Grab the data from our item from Local Storage
-				var value = localStorage.getItem(this.key);
+				var value = localStorage.getItem(key);
 				var item = JSON.parse(value);
 
 //Show the form
@@ -201,7 +201,7 @@ imageLi.appendChild(newImg);
 
 
 //Change submit button value to edit button
-			$('#save').attr("value", "Edit Mixtape");
+			$('#save').val("Edit Mixtape");
 			var editSubmit = $('#save');
 
 
@@ -209,9 +209,11 @@ imageLi.appendChild(newImg);
 //so we can use that value when save the data we edited
 			save.one("click", function(){
 				//console.log("save called");
-   storeData(thiskey);
+   storeData(key);
   });
 			editSubmit.attr("key", this.key);
+			
+				
 	}
 
 			var clearLocal = function(){
