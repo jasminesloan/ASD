@@ -242,30 +242,34 @@ $('#extras').on('pageinit', function() {
 
 // JSON Load Data
     $('#loadJson').on("click", function(){
+	    console.log("loadJson");
         $('#itemLoadData').empty();
         $.ajax({
             url: 'xhr/data.json',
             type: 'GET',
             dataType: 'json',
             success: function(response){
-            console.log(response);
-                for (var i=0, j=response.purchase.length; i<j; i++){
-                    var thing = response.purchase[i];
-                    console.log(purchase);
-                    $(''+
-                        '<div class="Data">' +
-                            '<p>' + thing.myLocation + '</p>' +
-                            '<p>' + thing.purchase + '</p>' +
-                            '<p>' + thing.quantity + '</p>' +
-                            '<p>' + thing.suggestions + '</p>' +
-                            '<p>' + thing.date + '</p>' +
-                        '</div>'
-                    ).appendTo('#itemLoadData');
-                };
+				console.log(response);
+				$.each(response, function(key, value) {
+// 					console.log(value);
+						$(''+
+							'<div class="Data">' +
+								'<p>' + value.myLocation[0] + " " + value.myLocation[1] + '</p>' +
+								'<p>' + value.purchase[0] + " " + value.purchase[1] + '</p>' +
+								'<p>' + value.quantity[0] + " " + value.quantity[1] + '</p>' +
+								'<p>' + value.suggestions[0] + " " + value.suggestions[1] + '</p>' +
+								'<p>' + value.myDate[0] + " " + value.myDate[1] + '</p>' +
+								'<hr />' +
+							'</div>'
+						).appendTo('#itemLoadData');
+				});
             },
+            error: function(msg) {
+            	console.log("Error.");
+            	console.log(msg);
+            }
         });
     });
-    
     
     	
 // XML Load Data	
@@ -316,11 +320,11 @@ $('#extras').on('pageinit', function() {
                  //   console.log(columns);
                     $(''+
                         '<div class="Data">'+
-                            '<p>' + 'Location: ' + columns[1] +'</p>'+
-                            '<p>' + 'Purchase: ' + columns[2] +'</p>'+
-                            '<p>' + 'Quantity: ' + columns[3] +'</p>'+
-                            '<p>' + 'Suggestions: ' + columns[4] +'</p>'+
-                            '<p>' + 'Date: ' + columns[5] +'</p>'+
+                            '<p>' + 'Location: ' + columns[0] +'</p>'+
+                            '<p>' + 'Purchase: ' + columns[1] +'</p>'+
+                            '<p>' + 'Quantity: ' + columns[2] +'</p>'+
+                            '<p>' + 'Suggestions: ' + columns[3] +'</p>'+
+                            '<p>' + 'Date: ' + columns[4] +'</p>'+
                         '</div>'
                     ).appendTo('#itemLoadData');
                 }
