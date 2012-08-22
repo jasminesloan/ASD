@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root>
+    <purchases>
+        <myLocation>30082</myLocation>
+        <purchase>Now</purchase>
+        <quantity>1</quantity>
+        <suggestions>Great Work!</suggestions>
+        <date>2012/08/01</date>
+    </purchases>
+    <purchases>
+        <myLocation>30106</myLocation>
+        <purchase>Que</purchase>
+        <quantity>2</quantity>
+        <suggestions>Great Work!</suggestions>
+        <date>2012/08/02</date>
+    </purchases>
+    <purchases>
+        <myLocation>30127</myLocation>
+        <purchase>Now</purchase>
+        <quantity>3</quantity>
+        <suggestions>Great Work!</suggestions>
+        <date>2012/08/03</date>
+    </purchases>
+    <purchases>
+        <myLocation>30080</myLocation>
+        <purchase>Que</purchase>
+        <quantity>4</quantity>
+        <suggestions>Great Work!</suggestions>
+        <date>2012/08/04</date>
+    </purchases>
+    <purchases>
+        <myLocation>30062</myLocation>
+        <purchase>Now</purchase>
+        <quantity>5</quantity>
+        <suggestions>Great Work!</suggestions>
+        <date>2012/08/05</date>
+    </purchases>
+    <purchases>
+        <myLocation>30060</myLocation>
+        <purchase>Que</purchase>
+        <quantity>6</quantity>
+        <suggestions>Great Work!</suggestions>
+        <date>2012/08/06</date>
+    </purchases>
+    <purchases>
+        <myLocation>30082</myLocation>
+        <purchase>Now</purchase>
+        <quantity>7</quantity>
+        <suggestions>Great Work!</suggestions>
+        <date>2012/08/07</date>
+    </purchases>
+    <purchases>
+        <myLocation>30067</myLocation>
+        <purchase>Que</purchase>
+        <quantity>8</quantity>
+        <suggestions>Great Work!</suggestions>
+        <date>2012/08/08</date>
+    </purchases>
+    <purchases>
+        <myLocation>30126</myLocation>
+        <purchase>Now</purchase>
+        <quantity>9</quantity>
+        <suggestions>Great Work!</suggestions>
+        <date>2012/08/09</date>
+    </purchases>
+    <purchases>
+        <myLocation>31018</myLocation>
+        <purchase>Que</purchase>
+        <quantity>10</quantity>
+        <suggestions>Great Work!</suggestions>
+        <date>2012/08/10</date>
+    </purchases>
+</root>
