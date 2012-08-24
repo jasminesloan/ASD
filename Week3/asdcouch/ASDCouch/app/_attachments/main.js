@@ -33,9 +33,112 @@
 			};
 		};
 
+		
+
+			
+			
+			var storeData = function(key){
+			console.log(key);
+				//	if (!key){
+								var id = Math.floor(Math.random()*100000001);
+				//	}else{
+
+				//			id = key;
+
+				//	}
+
+//Gather up all our form field values and store in an object.
+//Object properties contain array with the form label and input values.
+			
+			getSelectedRadio();
+
+			var item = {};
+					 
+					item._id	  			= "purchase:" + id;
+				//	item._rev				= rev;
+					item.location 			= ["Zip Code:", $('#location').val()];
+					item.purchase 			= ["Purchase:", $('#purchaseDate').val()];
+					item.date 				= ["Date", $('#date').val()];
+					item.quantity 			= ["Quantity", $('#quantity').val()];
+					item.suggestions 		= ["Suggestions", $('#suggestions').val()];
+
+//Save data into Local Storage: Use stringify to convert our object
+			console.log(item);
+			$.couch.db('asdproject').saveDoc(item, {
+					success: function (data) {
+					//	console.log(item);
+						alert("Mixtape Saved!");
+						
+						
+						//window.location.reload();
+		}
+	});
+};
+
+//Create visiable storage
+			var getData = function(){
+//console.log("id");
+				$.couch.db('asdproject').view("asdproject/purchases", {
+  					success: function(data) {
+  					console.log(data);
+  					$.each(data.rows, function(index, item) { 
+							var location = item.value.location;
+							var purchase = item.value.purchase;
+							var date = item.value.date;
+							var quantity = item.value.quantity;
+							var suggestions = item.value.suggestions;
+								$('#purchaseData').append(
+								$('<li>').text(location),
+								$('<li>').text(purchase),
+								$('<li>').text(date),
+								$('<li>').text(quantity),
+								$('<li>').text(suggestions),
+								$('<p></p>')
+			);
+			makeItemLinks(item.value._id, $('#purchaseData')[0]);
+		//	makeItemLinks(localStorage.key(i), linksLi);
+		});
+			
+  			//		('#purchaseData').listview('refresh');
+  					
+  		},
+  					error: function(status) {
+ 					 console.log(status);
+ 					 	$("#purchaseForm").empty();
+  		}
+  		
+	
+  		
+	});
+	
+	var makeDiv = document.createElement('div');
+		makeDiv.setAttribute("id", "items");
+		var makeList = document.createElement('ul');
+		makeDiv.appendChild(makeList);
+		document.body.appendChild(makeDiv);
+	//	$('items').style.display = "block";
+			for(var i=0, len=localStorage.length; i<len;i++){
+			var makeLi = document.createElement('li');
+			var linksLi = document.createElement('li');
+			makeList.appendChild(makeLi);
+			var key = localStorage.key(i);
+			var value = localStorage.getItem(key);
+			//Convert the string from the local storage value back to an object by using JSON.parse()
+			var obj = JSON.parse(value);
+			var makeSubList = document.createElement('ul');
+			makeLi.appendChild(makeSubList);
+			getImage(obj.group[1], makeSubList);
+			for(var n in obj){
+				var makeSubLi = document.createElement('li');
+				makeSubList.appendChild(makeSubLi);
+				var optSubText = obj[n][0]+" "+obj[n][1];
+				makeSubLi.innerHTML = optSubText;
+				makeSubLi.appendChild(linksLi);
+			}
+		}
 
 
-		var toggleControls = function(n){
+var toggleControls = function(n){
 			switch(n){
 					case "on":
 							$('#purchaseform').hide();
@@ -56,85 +159,6 @@
 				}
 			};
 
-			
-			
-			var storeData = function(key){
-				//If there is no key, this is a brand new item and we need a new key.
-					if (!key){
-								var id = Math.floor(Math.random()*100000001);
-					}else{
-//Set the id to the existing key we're editing so that it will save our data.
-//The key is the same that's been passed along from the editSubmit event handler
-//to the validate function, and the passed here, into the storeData function.
-							id = key;
-
-					}
-
-//Gather up all our form field values nd store in an object.
-//Object properties contain array with the form label and input values.
-			getSelectedRadio();
-
-			var item = {};
-					item.location = ["Zip Code:", $('#myLocation').val()];
-					item.purchase = ["Purchase:", getSelectedRadio()];
-					item.date = ["Date", $('#myDate').val()];
-					item.quantity = ["Quantity", $('#quantity').val()];
-					item.suggestions = ["Suggestions", $('#suggestions').val()];
-//Save data into Local Storage: Use stringify to convert our object
-			localStorage.setItem(id, JSON.stringify(item));
-			alert("Mixtape Saved!");
-			save.off("click");
-				save.on("click", storeData);
-			//window.location.reload();
-		};
-
-//Create visiable storage
-			var getData = function(){
-//console.log("id");
-				$("#purchpage").empty();
-				toggleControls("on");
-				if(localStorage.length === 0){
-						alert("There is no data in Local Storage so default data was added.");
-						autoFillData();
-}
-//Write data from local storage to browser
-			var makeDiv = $('<div>');
-			makeDiv.attr("id", "item");
-			var makeList = $('<ul>');
-			makeDiv.append(makeList);
-			$("#listP").append(makeDiv);
-			$('#item').show();
-					for(var i=0, len=localStorage.length; i<len;i++){
-					var makeLi = $('<li>');
-					var linksLi = $('<li>');
-					makeList.append(makeLi);
-					var key = localStorage.key(i);
-					var value = localStorage.getItem(key);
-//Convert the string from the local storage value back to an object by using JSON.parse()
-					var obj = JSON.parse(value); 
-					var makeSubList = $('<ul>');
-					makeLi.append(makeSubList);
-// getImage(obj.group[1], makeSubList);
-					for(var n in obj){
-						var makeSubLi = $('<li>');
-						makeSubList.append(makeSubLi);
-						var optSubText = obj[n][0]+" "+obj[n][1];
-						makeSubLi.text(optSubText);
-						makeSubLi.append(linksLi);
-				}
-				makeItemLinks(localStorage.key(i), linksLi); //Create our edit and delete buttons/link for each item in local storage.
-		};
-};
-
-//Get the image for the right category
- /* function getImage(catName, makeSubList){
-var imageLi = document.createElement('li');
-makeSubList.appendChild(imageLi);
-var newImg = document.createElement('img');
-var setSrc = newImg.setAttribute("src", "images/" + catName + ".png");
-imageLi.appendChild(newImg);
-} */
-
 
 //Auto Populate Local Storage
 			function autoFillData(jsonData){
@@ -144,13 +168,6 @@ imageLi.appendChild(newImg);
 			}
 		}
 						
-
-
-//The actual JSON OBJECT data required for this to work is coming from our json.js file which is loaded from our html page
-//Store JSON OBJECT into local storage
-			
-
-
 //Make Item Links
 //Create the edit and delete links for each stored item when displayed.
 			function makeItemLinks(key, linksLi){
@@ -161,12 +178,14 @@ imageLi.appendChild(newImg);
 				var editText = "Edit Mixtape";
 				editLink.on("click", editItem);
 				editLink.text(editText);
-				linksLi.append(editLink);
+				//console.log(linksLi);
+				//console.log(editLink);
+				linksLi.appendChild(editLink[0]);
 
 
 //add line break
 				var breakTag = $('<br>');
-				linksLi.append(breakTag);
+				linksLi.appendChild(breakTag[0]);
 
 //Add a delete single item link
 				var deleteLink = $('<a>');
@@ -175,29 +194,32 @@ imageLi.appendChild(newImg);
 				var deleteText = "Delete Mixtape";
 				deleteLink.on("click", deleteItem);
 				deleteLink.text(deleteText);
-				linksLi.append(deleteLink);
+				linksLi.appendChild(deleteLink[0]);
+				
 		}
 
 			function editItem(key){
-				
+
 //Grab the data from our item from Local Storage
 				var value = localStorage.getItem(key);
-				var item = JSON.parse(value);
-
-//Show the form
+				item = JSON.parse(value);
+				console.log(value);
+				
 			
+//Show the form
+
 			toggleControls("off");
 //populate the form fields with current localStorage value.
-			
-			
-			$("#myLocation").val(item.location[1]);
-			$("#myDate").val(item.date[1]);
-			$("#quantity").val(item.quantity[1]);
-			$("#suggestions").val(item.suggestions[1]);	
-			
+
+			console.log(value);
+			$('#location').value = item.location[1];
+			$('#date').value = item.date[1];
+			$('#quantity').value = item.quantity[1];
+			$('#suggestions').value = item.suggestions[1];	
+
 			var radios = $('input:radio[name="purchaseDate"]:checked').val();
 
-			
+
 //Remove the initial listener from the input "save mixtape" button.
 			save.off("click", storeData);
 
@@ -214,8 +236,8 @@ imageLi.appendChild(newImg);
    storeData(key);
   });
 			editSubmit.attr("key", this.key);
-			
-				
+
+
 	}
 
 			var clearLocal = function(){
@@ -239,146 +261,8 @@ imageLi.appendChild(newImg);
 						alert("Mixtape was not deleted.");
 				}
 		}
-
-// data --------------------------------------------------------------------------------------------		
-$('#extras').on('pageinit', function() {
-
-
-// JSON Load Data
-    $('#loadJson').on("click", function(){
-	   // console.log("loadJson");
-        $('#itemLoadData').empty();
-        $.ajax({
-            url: 'data.json',
-            type: 'GET',
-            dataType: 'json',
-            success: function(response){
-			//	console.log(response);
-				$.each(response, function(key, value) {
-// 					console.log(value);
-						$(''+
-							'<div class="Data">' +
-								'<p>' + value.myLocation[0] + " " + value.myLocation[1] + '</p>' +
-								'<p>' + value.purchase[0] + " " + value.purchase[1] + '</p>' +
-								'<p>' + value.quantity[0] + " " + value.quantity[1] + '</p>' +
-								'<p>' + value.suggestions[0] + " " + value.suggestions[1] + '</p>' +
-								'<p>' + value.myDate[0] + " " + value.myDate[1] + '</p>' +
-								'<hr />' +
-							'</div>'
-						).appendTo('#itemLoadData');
-				});
-            },
-            error: function(msg) {
-            //	console.log("Error.");
-            //	console.log(msg);
-            }
-        });
-    });
-    
-    	
-// XML Load Data	
-		   $('#loadXML').on("click", function(){
-        $('#itemLoadData').empty();
-        $.ajax({
-            url: 'data.xml',
-            type: 'GET',
-            dataType: 'xml',
-            success: function(xml){
-           // console.log(xml);
-                $(xml).find('purchases').each(function(){
-                    var itemLoadXML = {};
-                    itemLoadXML.myLocation = $(this).find('myLocation').text();
-                    itemLoadXML.purchase = $(this).find('purchase').text();
-                    itemLoadXML.quantity = $(this).find('quantity').text();
-                    itemLoadXML.suggestions = $(this).find('suggestions').text();
-                    itemLoadXML.date = $(this).find('date').text();
-                    
-                   // console.log(itemLoadXML);
-                    $(' '+
-                        '<div class="Data">'+
-                            '<p>'+ 'Location: ' + itemLoadXML.myLocation +'</p>'+
-                            '<p>'+ 'Purchase: ' + itemLoadXML.purchase +'</p>'+
-                            '<p>'+ 'Quantity: ' + itemLoadXML.quantity +'</p>'+
-                            '<p>'+ 'Suggestions: ' + itemLoadXML.suggestions +'</p>'+
-                            '<p>'+ 'Date: ' + itemLoadXML.date +'</p>'+
-                        '</div>'
-                    ).appendTo('#itemLoadData');
-                });
-            },
-        });
-    });
-    
-//CSV Laod Data
-    $('#loadCSV').on("click", function(){
-        $('#itemLoadData').empty();
-        $.ajax({
-            url: 'data.csv',
-            type: 'GET',
-            dataType: 'text',
-            success: function(csvLoad){
-           // console.log(csv);
-                var purchase = csvLoad.split("\n");
-                for (var i = 1; i < purchase.length; i++) {
-                    var row = purchase[i];
-                    var columns = row.split(",");
-                 //   console.log(columns);
-                    $(''+
-                        '<div class="Data">'+
-                            '<p>' + 'Location: ' + columns[0] +'</p>'+
-                            '<p>' + 'Purchase: ' + columns[1] +'</p>'+
-                            '<p>' + 'Quantity: ' + columns[2] +'</p>'+
-                            '<p>' + 'Suggestions: ' + columns[3] +'</p>'+
-                            '<p>' + 'Date: ' + columns[4] +'</p>'+
-                        '</div>'
-                    ).appendTo('#itemLoadData');
-                }
-            },
-        });
-    });
-    
-    
-    
-});
-/*function callajax(url, type, gFunc){
-
-	$.ajax({
-		url: url,
-		type: 'GET',
-		dataType: type,
-		success: function(response){
-				gFunc(response);
-				console.log("Purchase Submitted");
-					for (var i = 0 , j = response.purchase.length; i<j; i++){
-						var thing = response.purchase[i];
-						var purchaseList
-				}
-			},
-				error: function(err){
-				console.log("ERROR:");
-				console.log(err.statusText);
-			}
-	});
 	
-} */
-	
-	/*	function jsonParser(results){
-			json = results.purchase;
-
-				for (var n in json) {
-				console.log(json[n]);
-			}
-	}*/
-	
-     
-	
-	/*	function xmlParser(results){
-			var xm = $(results).find("purchases");
-
-			console.log(xm);
-		} */
-		
-	// json ajax call
-		//callajax('xhr/data.json', 'json', jsonParser);
+};		
 
 
 
@@ -388,7 +272,9 @@ var errMsg = $('#errors');
 var displayLink = $('#displayLink');
 displayLink.on("click", getData);
 var clearLink = $('#clearLink');
-clearLink.on("click", clearLocal);
+clearLink.on("click", function(){
+		clear();
+});
 var save = $("#save");
 save.on("click", storeData);	
 
